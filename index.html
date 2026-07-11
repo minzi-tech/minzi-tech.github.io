@@ -3,160 +3,629 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Majmaʿ al-baḥrayn · minzi-tech</title>
-<meta name="description" content="A constellation of instruments — apps built at the meeting of the two seas: data, scholarship, mysticism, and play." />
+<title>Majmaʿ al-baḥrayn — A Personal Mystical Library</title>
 <style>
-  :root{
-    --ink:#0e1424; --ink2:#151d33; --paper:#f7f2e6; --edge:#e6dcc4;
-    --teal:#3aa39d; --gold:#cf9f43; --rose:#b0506a; --muted:#8a8397; --text:#ece5d3;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:
-      radial-gradient(1200px 600px at 70% -10%, #1c2745 0%, transparent 60%),
-      radial-gradient(900px 500px at 10% 10%, #17223c 0%, transparent 55%),
-      var(--ink);
-    color:var(--text); font-family:'Iowan Old Style', Georgia, serif;
-    min-height:100vh; padding:56px 22px 72px;
-  }
-  .wrap{max-width:820px; margin:0 auto;}
-  header{text-align:center; margin-bottom:48px;}
-  .seas{display:inline-flex; align-items:center; gap:12px; margin-bottom:14px;}
-  .seas .bar{width:34px; height:3px; border-radius:2px;}
-  .seas .t{background:var(--teal);} .seas .g{background:var(--gold);}
-  .seas .k{font-size:12px; letter-spacing:3.5px; color:var(--muted); text-transform:uppercase;}
-  h1{font-size:34px; margin:0 0 8px; color:#fff; font-weight:600; letter-spacing:.5px;}
-  .sub{color:var(--muted); font-size:16px; margin:0; font-style:italic;}
-  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:18px;}
-  .work{
-    display:block; text-decoration:none; color:inherit; position:relative;
-    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
-    border:1px solid rgba(230,220,196,.16); border-radius:16px; padding:22px 22px 20px;
-    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-  }
-  a.work:hover{transform:translateY(-3px); border-color:rgba(207,159,67,.5);
-    box-shadow:0 12px 30px rgba(0,0,0,.35);}
-  .work.placeholder{opacity:.6; cursor:default;}
-  .work-num{position:absolute; top:16px; right:18px; font-size:12px; color:var(--muted); letter-spacing:1px;}
-  .work-glyph{width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center;
-    background:rgba(58,163,157,.12); color:var(--teal); margin-bottom:14px;}
-  .work h3{margin:0 0 2px; font-size:20px; color:#fff; font-weight:600;}
-  .work-ar{font-size:12.5px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
-  .work p{margin:0; font-size:14px; line-height:1.5; color:var(--text); opacity:.82;}
-  .go{display:inline-block; margin-top:14px; font-size:13.5px; color:var(--teal); font-weight:500;}
-  .soon{color:var(--muted);}
-  footer{margin-top:52px; text-align:center; color:var(--muted); font-size:12.5px; line-height:1.7;}
-  footer .glyphline{opacity:.5; letter-spacing:6px; margin-bottom:8px;}
+:root{
+  --ink:#0b1026; --ink2:#141b3a; --panel:#161d40; --panel2:#1b234c;
+  --lapis:#3a5bbf; --lapis-soft:#6f8de0; --gold:#d8b25a; --gold-soft:#ecd79b;
+  --parch:#e8e2cf; --parch-dim:#b3ad9a; --line:#2b3566;
+  --unwritten:#c98fb0;
+}
+*{box-sizing:border-box}
+html,body{margin:0; padding:0}
+.ml-root{
+  display:flex; height:100vh; min-height:560px; color:var(--parch);
+  background:
+    radial-gradient(1200px 600px at 80% -10%, #1d2857 0%, transparent 55%),
+    radial-gradient(900px 500px at -10% 110%, #241a44 0%, transparent 55%),
+    var(--ink);
+  font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+  font-size:15px; line-height:1.6;
+}
+.ml-side{width:270px; flex-shrink:0; background:linear-gradient(180deg,var(--ink2),var(--ink));
+  border-right:1px solid var(--line); padding:22px 18px; display:flex; flex-direction:column; overflow-y:auto}
+.ml-brand{display:flex; gap:11px; align-items:center; color:var(--gold); margin-bottom:26px}
+.ml-brand-ar{font-size:19px; letter-spacing:.5px; color:var(--gold-soft)}
+.ml-brand-en{font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--parch-dim)}
+.ml-nav{display:flex; flex-direction:column; gap:4px; margin-bottom:26px}
+.ml-navbtn{display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:transparent;
+  border:none; color:var(--parch-dim); cursor:pointer; padding:9px 11px; border-radius:8px;
+  font-family:inherit; font-size:14.5px; transition:.16s}
+.ml-navbtn:hover{background:var(--panel); color:var(--parch)}
+.ml-navbtn.on{background:var(--panel2); color:var(--gold-soft)}
+.ml-count{margin-left:auto; font-size:11px; color:var(--parch-dim); background:var(--ink);
+  border:1px solid var(--line); border-radius:20px; padding:1px 8px}
+.ml-side-label{display:flex; align-items:center; gap:6px; font-size:11px; letter-spacing:2px;
+  text-transform:uppercase; color:var(--parch-dim); margin:0 4px 10px}
+.ml-concept-list{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:auto}
+.ml-concept-chip{font-family:inherit; font-size:12.5px; cursor:pointer; padding:4px 10px; border-radius:20px;
+  background:var(--panel); border:1px solid var(--line); color:var(--lapis-soft); transition:.15s}
+.ml-concept-chip:hover{border-color:var(--lapis); color:#cfe}
+.ml-concept-chip.on{background:var(--lapis); border-color:var(--lapis); color:#fff}
+.ml-concept-chip.unwritten{color:var(--unwritten); border-style:dashed; background:transparent}
+.ml-side-foot{margin-top:22px; font-size:11.5px; font-style:italic; color:var(--parch-dim);
+  line-height:1.5; border-top:1px solid var(--line); padding-top:14px}
+.ml-main{flex:1; display:flex; flex-direction:column; min-width:0}
+.ml-top{display:flex; gap:12px; padding:18px 26px; border-bottom:1px solid var(--line); align-items:center}
+.ml-search{flex:1; display:flex; align-items:center; gap:9px; background:var(--panel);
+  border:1px solid var(--line); border-radius:10px; padding:9px 13px; color:var(--parch-dim)}
+.ml-search input{flex:1; background:transparent; border:none; outline:none; color:var(--parch);
+  font-family:inherit; font-size:14.5px}
+.ml-search input::placeholder{color:var(--parch-dim)}
+.ml-add{display:inline-flex; align-items:center; gap:7px; background:linear-gradient(180deg,var(--gold),#c39a3f);
+  color:#241a06; border:none; font-family:inherit; font-weight:600; font-size:14px; cursor:pointer;
+  padding:9px 15px; border-radius:9px; transition:.15s; white-space:nowrap}
+.ml-add:hover{filter:brightness(1.07)}
+.ml-add:disabled{opacity:.4; cursor:not-allowed}
+.ml-ghost{background:transparent; color:var(--parch-dim); border:1px solid var(--line);
+  font-family:inherit; font-size:14px; padding:9px 15px; border-radius:9px; cursor:pointer}
+.ml-ghost:hover{color:var(--parch)}
+.ml-scroll{flex:1; overflow-y:auto; padding:22px 26px 60px}
+.ml-rule{display:flex; align-items:center; gap:14px; margin:26px 2px 16px}
+.ml-rule:first-child{margin-top:4px}
+.ml-rule span{font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold)}
+.ml-rule i{flex:1; height:1px; background:linear-gradient(90deg,var(--gold) 0%,transparent 60%); opacity:.4}
+.ml-cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:16px}
+.ml-card{background:linear-gradient(165deg,var(--panel2),var(--panel)); border:1px solid var(--line);
+  border-radius:14px; padding:17px 18px; display:flex; flex-direction:column; position:relative; transition:.18s}
+.ml-card:hover{border-color:var(--lapis); transform:translateY(-2px)}
+.ml-card-head{display:flex; justify-content:space-between; align-items:flex-start}
+.ml-card-ico{color:var(--gold)}
+.ml-star{background:none; border:none; cursor:pointer; color:var(--parch-dim); padding:2px}
+.ml-star.on{color:var(--gold)}
+.ml-card-title{font-size:17px; margin:8px 0 3px; line-height:1.3; color:var(--parch)}
+.ml-card-meta{font-size:12.5px; color:var(--parch-dim); font-style:italic; margin-bottom:10px}
+.ml-card-refl{font-size:14px; line-height:1.62; color:#d7d2c0; margin:0 0 12px}
+.ml-tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px}
+.ml-tag{font-size:11px; letter-spacing:.4px; color:var(--lapis-soft); background:var(--ink);
+  border:1px solid var(--line); border-radius:20px; padding:2px 9px; font-family:ui-sans-serif,system-ui,sans-serif}
+.ml-card-foot{display:flex; justify-content:space-between; align-items:center; margin-top:auto}
+.ml-open{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--gold-soft);
+  text-decoration:none; font-family:ui-sans-serif,system-ui,sans-serif}
+.ml-open:hover{color:var(--gold)}
+.ml-open--none{color:var(--parch-dim); font-style:italic}
+.ml-del{background:none; border:none; color:var(--parch-dim); cursor:pointer; padding:3px; border-radius:6px}
+.ml-del:hover{color:#d98a8a; background:var(--ink)}
+.ml-link{font-family:inherit; font-size:inherit; background:none; border:none; cursor:pointer;
+  color:var(--lapis-soft); padding:0; border-bottom:1px solid rgba(111,141,224,.4)}
+.ml-link:hover{color:#bcd4ff; border-color:var(--lapis-soft)}
+.ml-link--unwritten{color:var(--unwritten); border-bottom:1px dashed rgba(201,143,176,.5)}
+.ml-notes{display:flex; flex-direction:column; gap:14px; max-width:760px}
+.ml-note{background:linear-gradient(165deg,var(--panel2),var(--panel)); border:1px solid var(--line);
+  border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:16px 20px}
+.ml-note-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px}
+.ml-note-head h3{margin:0; font-size:16px; color:var(--parch)}
+.ml-back{display:inline-flex; align-items:center; gap:6px; background:none; border:none;
+  color:var(--parch-dim); cursor:pointer; font-family:inherit; font-size:13px; margin-bottom:14px}
+.ml-back:hover{color:var(--gold-soft)}
+.ml-concept-head{display:flex; align-items:center; gap:12px; color:var(--gold); margin-bottom:16px}
+.ml-concept-head h1{margin:0; font-size:30px; color:var(--parch); font-weight:500}
+.ml-concept-body{max-width:720px; margin-bottom:10px}
+.ml-concept-prose{font-size:16px; line-height:1.7; color:#ded9c8}
+.ml-inline-edit{margin-left:8px; font-size:12px; font-family:ui-sans-serif,system-ui,sans-serif;
+  background:none; border:none; color:var(--lapis-soft); cursor:pointer}
+.ml-unwritten-block{background:var(--panel); border:1px dashed var(--line); border-radius:12px;
+  padding:22px; text-align:center}
+.ml-unwritten-block p{color:var(--parch-dim); font-style:italic; margin:0 0 14px}
+.ml-editwrap{display:flex; flex-direction:column; gap:10px}
+.ml-editbtns{display:flex; gap:10px; margin-top:4px}
+.ml-muted{color:var(--parch-dim); font-style:italic}
+.ml-backlinks{display:flex; flex-direction:column; gap:12px; max-width:760px}
+.ml-backlink{display:flex; gap:14px; background:var(--panel); border:1px solid var(--line);
+  border-radius:11px; padding:14px 16px}
+.ml-kind{font-size:10px; letter-spacing:1.5px; text-transform:uppercase; padding:3px 8px;
+  border-radius:20px; height:fit-content; font-family:ui-sans-serif,system-ui,sans-serif; white-space:nowrap}
+.ml-kind--source{background:rgba(216,178,90,.14); color:var(--gold-soft)}
+.ml-kind--note{background:rgba(111,141,224,.16); color:var(--lapis-soft)}
+.ml-kind--concept{background:rgba(201,143,176,.16); color:var(--unwritten)}
+.ml-backlink-title{font-size:14.5px; color:var(--parch); margin-bottom:3px}
+.ml-backlink-text{font-size:13px; color:var(--parch-dim); margin:0; line-height:1.55;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.ml-field,.ml-textarea{width:100%; background:var(--ink); border:1px solid var(--line); border-radius:9px;
+  padding:11px 13px; color:var(--parch); font-family:inherit; font-size:14.5px; outline:none; margin-bottom:11px}
+.ml-field:focus,.ml-textarea:focus{border-color:var(--lapis)}
+.ml-field::placeholder,.ml-textarea::placeholder{color:var(--parch-dim)}
+.ml-textarea{min-height:110px; resize:vertical; line-height:1.6}
+.ml-textarea--tall{min-height:200px}
+.ml-row{display:flex; gap:11px}
+.ml-row .ml-field{flex:1}
+.ml-modal-bg{position:fixed; inset:0; background:rgba(6,9,22,.72); backdrop-filter:blur(3px);
+  display:flex; align-items:center; justify-content:center; padding:20px; z-index:50}
+.ml-modal{width:560px; max-width:100%; max-height:88vh; overflow-y:auto;
+  background:linear-gradient(175deg,var(--panel2),var(--ink2)); border:1px solid var(--lapis);
+  border-radius:16px; padding:22px 24px; box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.ml-modal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px}
+.ml-modal-head h2{margin:0; font-size:20px; color:var(--gold-soft)}
+.ml-x{background:none; border:none; color:var(--parch-dim); cursor:pointer; padding:4px; border-radius:6px}
+.ml-x:hover{color:var(--parch); background:var(--ink)}
+.ml-empty{display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center;
+  color:var(--parch-dim); max-width:440px; margin:80px auto 0; line-height:1.6}
+.ml-empty svg{color:var(--gold); opacity:.7}
+/* card foot with read button */
+.ml-foot-left{display:flex; align-items:center; gap:14px}
+.ml-read{display:inline-flex; align-items:center; gap:6px; font-family:ui-sans-serif,system-ui,sans-serif;
+  font-size:12.5px; letter-spacing:.3px; background:linear-gradient(180deg,var(--gold),#c39a3f);
+  color:#241a06; border:none; font-weight:600; cursor:pointer; padding:5px 11px; border-radius:7px; transition:.15s}
+.ml-read:hover{filter:brightness(1.08)}
+
+/* marginalia source line */
+.ml-note-src{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;
+  font-family:ui-sans-serif,system-ui,sans-serif; font-size:12px; color:var(--parch-dim)}
+.ml-anno-pg{background:rgba(216,178,90,.14); color:var(--gold-soft); border-radius:5px;
+  padding:1px 7px; font-family:ui-sans-serif,system-ui,sans-serif; font-size:11.5px; white-space:nowrap}
+.ml-anno-time{font-family:ui-sans-serif,system-ui,sans-serif; font-size:11.5px; color:var(--parch-dim)}
+
+/* ---------- reading room ---------- */
+.ml-reading{flex:1; display:flex; flex-direction:column; min-height:0}
+.ml-read-bar{display:flex; align-items:center; gap:16px; padding:12px 20px;
+  border-bottom:1px solid var(--line); background:var(--ink2)}
+.ml-read-bar .ml-back{margin:0}
+.ml-read-title{flex:1; font-size:15px; color:var(--gold-soft); white-space:nowrap; overflow:hidden;
+  text-overflow:ellipsis}
+.ml-read-jump{display:flex; align-items:center; gap:7px}
+.ml-read-jump input{width:78px; background:var(--ink); border:1px solid var(--line); border-radius:7px;
+  padding:6px 9px; color:var(--parch); font-family:inherit; font-size:13px; outline:none}
+.ml-read-jump input:focus{border-color:var(--lapis)}
+.ml-ghost--sm{padding:6px 11px; font-size:13px}
+.ml-read-body{flex:1; display:flex; min-height:0}
+.ml-read-book{flex:1.35; min-width:0; background:#1b1b1f; border-right:1px solid var(--line)}
+.ml-read-book iframe{width:100%; height:100%; display:block; border:0}
+.ml-read-notes{flex:1; max-width:440px; display:flex; flex-direction:column; min-width:0; background:var(--ink)}
+
+.ml-anno-new{padding:16px 18px; border-bottom:1px solid var(--line)}
+.ml-anno-row{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+.ml-anno-page{width:64px; background:var(--ink2); border:1px solid var(--line); border-radius:7px;
+  padding:7px 9px; color:var(--parch); font-family:inherit; font-size:14px; outline:none}
+.ml-anno-page:focus{border-color:var(--gold)}
+.ml-anno-hint{font-family:ui-sans-serif,system-ui,sans-serif; font-size:11.5px; color:var(--parch-dim); font-style:italic}
+.ml-anno-text{width:100%; min-height:92px; resize:vertical; background:var(--ink2); border:1px solid var(--line);
+  border-radius:9px; padding:10px 12px; color:var(--parch); font-family:inherit; font-size:14.5px;
+  line-height:1.55; outline:none}
+.ml-anno-text:focus{border-color:var(--lapis)}
+.ml-anno-text::placeholder{color:var(--parch-dim)}
+.ml-anno-actions{display:flex; align-items:center; justify-content:space-between; margin-top:9px}
+.ml-anno-kbd{font-family:ui-sans-serif,system-ui,sans-serif; font-size:11px; color:var(--parch-dim); opacity:.7}
+.ml-add--sm{padding:7px 12px; font-size:13px}
+
+.ml-anno-list{flex:1; overflow-y:auto; padding:14px 18px 40px; display:flex; flex-direction:column; gap:12px}
+.ml-anno-empty{color:var(--parch-dim); font-style:italic; font-size:13.5px; line-height:1.6; padding:12px 2px}
+.ml-anno{background:linear-gradient(165deg,var(--panel2),var(--panel)); border:1px solid var(--line);
+  border-left:3px solid var(--gold); border-radius:0 11px 11px 0; padding:12px 14px}
+.ml-anno-meta{display:flex; align-items:center; gap:10px; margin-bottom:7px}
+.ml-anno-meta .ml-anno-time{margin-right:auto}
+.ml-del--sm{padding:2px}
+.ml-anno-body{font-size:14px; line-height:1.6; color:#dcd7c6}
+
+@media (max-width:820px){
+  .ml-read-body{flex-direction:column}
+  .ml-read-book{flex:none; height:52vh; border-right:none; border-bottom:1px solid var(--line)}
+  .ml-read-notes{max-width:none; flex:none; min-height:340px}
+}
+
+@media (max-width:720px){
+  .ml-root{flex-direction:column; height:auto; min-height:100vh}
+  .ml-side{width:100%; flex-direction:row; flex-wrap:wrap; align-items:center; gap:12px; padding:14px 16px}
+  .ml-brand{margin-bottom:0; margin-right:auto}
+  .ml-nav{flex-direction:row; margin-bottom:0}
+  .ml-side-label,.ml-side-foot{display:none}
+  .ml-concept-list{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="seas">
-      <span class="bar t"></span>
-      <span class="k">Majmaʿ al-baḥrayn</span>
-      <span class="bar g"></span>
-    </div>
-    <h1>The Meeting of the Two Seas</h1>
-    <p class="sub">A constellation of instruments — built where data, scholarship, mysticism, and play converge.</p>
-  </header>
+<div id="root"></div>
 
-  <div class="grid" id="grid"></div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.6/babel.min.js"></script>
 
-  <footer>
-    <div class="glyphline">✦ ✧ ✦</div>
-    Built iteratively, held together with intention.<br/>
-    minzi-tech.github.io
-  </footer>
-</div>
+<script type="text/babel" data-presets="react">
+const { useState, useMemo, useEffect, useRef } = React;
 
-<script>
-const USERNAME = "minzi-tech";
+/* ---- tiny inline icon set (so we need no icon CDN) ---- */
+const Ico = ({d, size=16, fill="none"}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor"
+    strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+    {d}
+  </svg>
+);
+const IcoBook = (p)=><Ico {...p} d={<><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></>}/>;
+const IcoFeather=(p)=><Ico {...p} d={<><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></>}/>;
+const IcoLib=(p)=><Ico {...p} d={<><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></>}/>;
+const IcoNote=(p)=><Ico {...p} d={<><path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5z"/><path d="M15 3v6h6"/></>}/>;
+const IcoHash=(p)=><Ico {...p} d={<><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></>}/>;
+const IcoSearch=(p)=><Ico {...p} d={<><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></>}/>;
+const IcoPlus=(p)=><Ico {...p} d={<><path d="M5 12h14"/><path d="M12 5v14"/></>}/>;
+const IcoX=(p)=><Ico {...p} d={<><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>}/>;
+const IcoStar=(p)=><Ico {...p} d={<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>}/>;
+const IcoTrash=(p)=><Ico {...p} d={<><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></>}/>;
+const IcoExt=(p)=><Ico {...p} d={<><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></>}/>;
+const IcoBack=(p)=><Ico {...p} d={<><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></>}/>;
 
-/* Each work: title, ar (subtitle), blurb, repo, glyph, ready.
-   ready:false renders a non-clickable "coming soon" card.
-   Set a repo's ready:false if you haven't pushed it yet, to avoid a dead link. */
-const WORKS = [
-  {
-    title: "Majma\u02bf Library",
-    ar: "A Mystical Library",
-    blurb: "A personal library for comparative mysticism and scholarship \u2014 wiki-style concept linking across traditions, from Ibn Arabi's science of letters to Indo-Iranian cosmology.",
-    repo: "majma-library",
-    glyph: "book",
-    ready: true,
-  },
-  {
-    title: "The Volvelle",
-    ar: "A Spirit-Board Instrument",
-    blurb: "An interactive volvelle drawing on Enochian letters, Ibn Arabi's science of letters, hijaz-scale pitch, and astrolabe mechanics \u2014 a divinatory dial for the iPad.",
-    repo: "volvelle",
-    glyph: "compass",
-    ready: true,
-  },
-  {
-    title: "Unicorn Job Finder",
-    ar: "A Job Command Center",
-    blurb: "Surfaces only the roles that assemble a whole interdisciplinary self. Tunes searches to a dream-job wireframe rather than a job title, points to the networks where rare roles actually circulate, and scores each opening by how close to unicorn it is.",
-    repo: "unicorn",
-    glyph: "star",
-    ready: true,
-  },
-  {
-    title: "Rollies \u00b7 Homebrew",
-    ar: "A Campaign Roll Ledger",
-    blurb: "A dice tracker for the homebrew campaign \u2014 twenty rolls per player per session, with live per-player statistics and head-to-head comparison across the table.",
-    repo: "rollies-nerdy",
-    glyph: "dice",
-    ready: true,
-  },
-  {
-    title: "Rollies \u00b7 Strahd",
-    ar: "A Ravenloft Roll Ledger",
-    blurb: "The same roll-tracking engine tuned for the Strahd game \u2014 twenty rolls per player per session, up-to-date statistics, and player-versus-player comparison, skinned for the mists of Barovia.",
-    repo: "rollies-strahd",
-    glyph: "dice",
-    ready: true,
-  },
-  {
-    title: "Notes from the Universe",
-    ar: "A Daily Oracle",
-    blurb: "Draw a quiet message from a personal archive of Notes from the Universe by Mike Dooley \u2014 a starlit card, a note that found you, pulled at random from years of collected correspondence with the cosmos.",
-    repo: "oracular-notes",
-    glyph: "star",
-    ready: true,
-  },
+/* ================= seed data ================= */
+const SEED_SOURCES = [
+  {id:"s1", title:"Alberuni's India (Kitāb al-Hind)", author:"Al-Bīrūnī, tr. Edward Sachau",
+   year:"1030 CE / tr. 1910", url:"https://archive.org/details/alberunis-india-volume-1-2",
+   tags:["primary","comparative religion","indology"], starred:true,
+   reflection:"The foundational text. Al-Bīrūnī read Sanskrit and tried to describe [[Hindu Cosmology]] on its own terms before judging it — the method Schimmel called the first objective book on the history of religion. Read the full Sachau, not the abridgment; the abridgment strips the apparatus. Pairs directly with my [[Comparative Mythology]] work."},
+  {id:"s2", title:"The Chronology of Ancient Nations (al-Āthār al-Bāqiya)", author:"Al-Bīrūnī, tr. Edward Sachau",
+   year:"1000 CE / tr. 1879", url:"https://archive.org/details/chronologyofanci00biru",
+   tags:["primary","calendars","festivals"], starred:true,
+   reflection:"The companion volume, and possibly the richer mine for me: a comparative study of why peoples reckon time and festivals differently. Calendar systems are where [[Cosmology]] becomes concrete. Strong thread into [[Indo-Iranian Bridge]] and Zoroastrian reckoning."},
+  {id:"s3", title:"Al-Bīrūnī between Greece and India", author:"Franz Rosenthal", year:"1976", url:"",
+   tags:["secondary","method","essay"], starred:false,
+   reflection:"Repeatedly cited as the superior treatment of his cross-cultural synthesis. Fowden (2013) names Bīrūnī, Ibn Sina, and Firdausi as the three giant intellects of the 11th century — the [[Firdausi Pairing]] matters for my Shahnameh reading."},
+  {id:"s4", title:"Al-Bīrūnī: Father of Comparative Religion", author:"Kamar Oniah Kamaruzzaman", year:"2003", url:"",
+   tags:["secondary","monograph","method"], starred:false,
+   reflection:"The monograph on the [[Phenomenological Method]] reading — his approach to religion parallels modern methodologies, describing a tradition before judging it."},
+  {id:"s5", title:"Spiritual Body and Celestial Earth: From Mazdean Iran to Shīʿite Iran",
+   author:"Henry Corbin, tr. Nancy Pearson", year:"1977", url:"https://bahai-library.com/pdf/c/corbin_spiritual_body_celestial.pdf",
+   tags:["primary","imaginal","Persian"], starred:true,
+   reflection:"Corbin's great work on the [[Mundus Imaginalis]] — the imaginal (not imaginary) realm, the barzakh between sense and intellect, the Earth perceived as Angel. Traces angelology from Zoroastrian Mazdaism into Shīʿite theosophy, so it sits right on my [[Indo-Iranian Bridge]]. The whole second half is an anthology of Persian mystics. Ibn Arabi runs all through it. Free PDF at the link."},
+  {id:"s6", title:"The Sense of Unity: The Sufi Tradition in Persian Architecture",
+   author:"Nader Ardalan & Laleh Bakhtiar", year:"1973", url:"",
+   tags:["primary","sacred geometry","architecture"], starred:false,
+   reflection:"The first extended study of Persian architecture as Sufi metaphysics made spatial — unity in multiplicity, tawḥīd rendered in dome, square, and garden. Directly feeds [[Sacred Geometry]]; the whole book is a bridge between Ibn Arabi's cosmology and buildable proportion. Bakhtiar (who also gave us a major Qur'an translation) reads the mosque as mandala."},
+  {id:"s7", title:"Scandal: Essays in Islamic Heresy", author:"Peter Lamborn Wilson", year:"1988", url:"",
+   tags:["primary","heterodoxy","essays"], starred:false,
+   reflection:"The wild card. Essays on the 'poetic facts' of Islamic heresy — the science of letters, forbidden imagery, the inner teaching of Alamut, the mystic use of imagination. Idiosyncratic and not always careful, but it opens doors orthodoxy keeps shut. 'Secrets of the Assassins' is free on the Anarchist Library. Read against [[Ilm al-Huruf]]."},
+  {id:"s8", title:"From the Beast to the Blonde: On Fairy Tales and Their Tellers",
+   author:"Marina Warner", year:"1994", url:"",
+   tags:["secondary","folklore","feminine"], starred:false,
+   reflection:"Warner as the female Joseph Campbell. Recovers the women's voices — sibyls, crones, the Queen of Sheba, Mother Goose — behind tales the Grimms and Perrault took credit for. A study of the [[Divine Feminine]] as transmitter of heterodox knowledge, and of storytelling itself as an initiatory craft. Feeds [[Comparative Mythology]] from the distaff side."},
+  {id:"s9", title:"Alone of All Her Sex: The Myth and the Cult of the Virgin Mary",
+   author:"Marina Warner", year:"1976", url:"",
+   tags:["secondary","myth","feminine"], starred:false,
+   reflection:"Warner's earlier study — how one figure absorbed goddess-material across centuries. Useful next to Ibn Arabi's Fatima and the [[Divine Feminine]] in Sufi cosmology; a case study in how the sacred feminine gets built, layer by layer."},
 ];
 
-const GLYPHS = {
-  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
-  compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
-  dice: '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/>',
-  star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-};
+const SEED_CONCEPTS = [
+  {id:"c1", name:"Comparative Mythology",
+   body:"My associative through-line: Zoroastrian, Indo-Iranian, and Vedic traditions held in parallel rather than collapsed. Al-Bīrūnī is a documented 11th-c. precedent for exactly this — see [[Indo-Iranian Bridge]]. Marina Warner extends it toward the [[Divine Feminine]] and the teller of the tale."},
+  {id:"c2", name:"Indo-Iranian Bridge",
+   body:"Where Bīrūnī intersects the Zoroastrian/Vedic work most concretely. He built methods to convert Hindu calendar dates to Greek, Muslim, and Persian reckonings — cosmology made computational. Corbin walks the same bridge from the other side, tracing Mazdean angelology into Shīʿite Iran."},
+  {id:"c3", name:"Firdausi Pairing",
+   body:"Same Ghaznavid Persianate moment produced both the great recension of Iranian myth (the Shahnameh) and the great comparative ethnography of India. Bīrūnī and Ferdowsi: near-contemporaries, overlapping patronage."},
+  {id:"c4", name:"Mundus Imaginalis",
+   body:"Corbin's term for the imaginal world — a real order of being between sense and intellect, where visions have their own objectivity. The ʿālam al-mithāl, entered through the barzakh. This is the metaphysical home of my volvelle/spirit-board work and of [[Ilm al-Huruf]]."},
+  {id:"c5", name:"Sacred Geometry",
+   body:"Proportion as theology: unity in multiplicity made visible. Ardalan & Bakhtiar read the Persian dome and garden this way. Connects to [[Ilm al-Huruf]] (letters as generative units) and to the astrolabe logic underneath the volvelle."},
+  {id:"c6", name:"Ilm al-Huruf",
+   body:"The science of letters — Ibn Arabi's cosmology of the alphabet, where the divine names structure creation and letters are ontological, not merely phonetic. The engine of the spirit-board work. Peter Lamborn Wilson circles it from the heretical margin; Corbin from the imaginal centre."},
+  {id:"c7", name:"Divine Feminine",
+   body:"From Ibn Arabi's Fatima bint Ibn al-Muthanna and the feminine theophany, through Corbin's Sophia, to Warner's genealogy of Marian and fairy-tale figures. How the sacred feminine is transmitted, absorbed, and re-told across traditions."},
+];
 
-function hrefFor(w){
-  if(w.url) return w.url;
-  if(!w.ready) return null;
-  return "https://" + USERNAME + ".github.io/" + w.repo + "/";
+/* ================= helpers ================= */
+const uid=()=>Math.random().toString(36).slice(2,9);
+const LINK_RE=/\[\[([^\]]+)\]\]/g;
+function extractLinks(t){const o=new Set();let m;LINK_RE.lastIndex=0;while((m=LINK_RE.exec(t||""))!==null)o.add(m[1].trim());return[...o];}
+
+/* pull an archive.org identifier from a details/stream/embed URL, else null */
+function archiveId(url){
+  if(!url) return null;
+  const m=url.match(/archive\.org\/(?:details|stream|embed)\/([^\/?#]+)/i);
+  return m?m[1]:null;
+}
+function embedUrl(id,page){
+  let u="https://archive.org/embed/"+id;
+  if(page&&/^\d+$/.test(String(page))) u+="#page/n"+page+"/mode/2up";
+  return u;
+}
+/* short human timestamp */
+function stamp(ts){
+  const d=new Date(ts);
+  return d.toLocaleDateString(undefined,{month:"short",day:"numeric"})+" · "+
+         d.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
 }
 
-const grid = document.getElementById("grid");
-WORKS.forEach(function(w, i){
-  const href = hrefFor(w);
-  const tag = href ? "a" : "div";
-  const el = document.createElement(tag);
-  el.className = "work" + (w.ready ? "" : " placeholder");
-  if(href) el.href = href;
-  const glyph = GLYPHS[w.glyph] || GLYPHS.star;
-  el.innerHTML =
-    '<span class="work-num">' + String(i+1).padStart(2,"0") + '</span>' +
-    '<div class="work-glyph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + glyph + '</svg></div>' +
-    '<h3>' + w.title + '</h3>' +
-    '<div class="work-ar">' + (w.ar || "") + '</div>' +
-    '<p>' + w.blurb + '</p>' +
-    '<span class="go ' + (w.ready ? "" : "soon") + '">' + (w.ready ? "Open \u2192" : "Coming soon") + '</span>';
-  grid.appendChild(el);
-});
+/* localStorage persistence (ON) */
+const STORE={
+  load(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f;}catch(e){return f;}},
+  save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
+};
+
+function LinkedText({text,onOpenConcept,concepts}){
+  const known=useMemo(()=>new Set(concepts.map(c=>c.name.toLowerCase())),[concepts]);
+  const parts=[];let last=0;let m;LINK_RE.lastIndex=0;
+  while((m=LINK_RE.exec(text||""))!==null){
+    if(m.index>last)parts.push(text.slice(last,m.index));
+    const name=m[1].trim();const exists=known.has(name.toLowerCase());
+    parts.push(<button key={m.index} onClick={()=>onOpenConcept(name)}
+      className={"ml-link "+(exists?"":"ml-link--unwritten")}>{name}</button>);
+    last=m.index+m[0].length;
+  }
+  if(last<(text||"").length)parts.push(text.slice(last));
+  return <span>{parts}</span>;
+}
+
+/* ================= app ================= */
+function MysticalLibrary(){
+  const [sources,setSources]=useState(()=>STORE.load("ml_sources",SEED_SOURCES));
+  const [concepts,setConcepts]=useState(()=>STORE.load("ml_concepts",SEED_CONCEPTS));
+  const [notes,setNotes]=useState(()=>STORE.load("ml_notes",[]));
+  const [view,setView]=useState("shelf");
+  const [activeConcept,setActiveConcept]=useState(null);
+  const [readingId,setReadingId]=useState(null);
+  const [query,setQuery]=useState("");
+  const [composer,setComposer]=useState(null);
+
+  function openReading(source){ setReadingId(source.id); setView("reading"); }
+  function addAnnotation(sourceId,{page,body}){
+    setNotes(ns=>[{id:uid(),sourceId,page:page||"",body,ts:Date.now()},...ns]);
+  }
+
+  useEffect(()=>STORE.save("ml_sources",sources),[sources]);
+  useEffect(()=>STORE.save("ml_concepts",concepts),[concepts]);
+  useEffect(()=>STORE.save("ml_notes",notes),[notes]);
+
+  const allText=useMemo(()=>[...sources.map(s=>s.reflection),...notes.map(n=>n.body),...concepts.map(c=>c.body)].join(" "),[sources,notes,concepts]);
+  const referenced=useMemo(()=>extractLinks(allText),[allText]);
+
+  function openConcept(name){
+    const ex=concepts.find(c=>c.name.toLowerCase()===name.toLowerCase());
+    if(!ex){const c={id:uid(),name,body:""};setConcepts(cs=>[...cs,c]);setActiveConcept(c.name);}
+    else setActiveConcept(ex.name);
+    setView("concept");
+  }
+  function backlinksFor(name){
+    const n=name.toLowerCase();const hits=[];
+    sources.forEach(s=>{if(extractLinks(s.reflection).some(l=>l.toLowerCase()===n))hits.push({kind:"source",id:s.id,title:s.title,text:s.reflection});});
+    notes.forEach(nt=>{if(extractLinks(nt.body).some(l=>l.toLowerCase()===n)){
+      const bk=nt.sourceId?(sources.find(s=>s.id===nt.sourceId)||{}).title:null;
+      const label=nt.title || (bk?(bk+(nt.page?" · p. "+nt.page:"")):"Margin note");
+      hits.push({kind:"note",id:nt.id,title:label,text:nt.body});}});
+    concepts.forEach(c=>{if(c.name.toLowerCase()!==n&&extractLinks(c.body).some(l=>l.toLowerCase()===n))hits.push({kind:"concept",id:c.id,title:c.name,text:c.body});});
+    return hits;
+  }
+  const fSources=sources.filter(s=>{if(!query)return true;const q=query.toLowerCase();
+    return s.title.toLowerCase().includes(q)||s.author.toLowerCase().includes(q)||s.tags.join(" ").toLowerCase().includes(q)||(s.reflection||"").toLowerCase().includes(q);});
+  const fNotes=notes.filter(n=>{if(!query)return true;const q=query.toLowerCase();
+    return (n.title||"").toLowerCase().includes(q)||(n.body||"").toLowerCase().includes(q);});
+
+  return (
+    <div className="ml-root">
+      <aside className="ml-side">
+        <div className="ml-brand">
+          <IcoFeather size={20}/>
+          <div><div className="ml-brand-ar">مجمع البحرين</div>
+          <div className="ml-brand-en">Majmaʿ al-baḥrayn</div></div>
+        </div>
+        <nav className="ml-nav">
+          <button className={"ml-navbtn "+(view==="shelf"?"on":"")} onClick={()=>setView("shelf")}>
+            <IcoLib/> The Shelf <span className="ml-count">{sources.length}</span></button>
+          <button className={"ml-navbtn "+(view==="notes"?"on":"")} onClick={()=>setView("notes")}>
+            <IcoNote/> Marginalia <span className="ml-count">{notes.length}</span></button>
+        </nav>
+        <div className="ml-side-label"><IcoHash size={12}/> Concepts</div>
+        <div className="ml-concept-list">
+          {concepts.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(c=>(
+            <button key={c.id} className={"ml-concept-chip "+(activeConcept===c.name&&view==="concept"?"on":"")}
+              onClick={()=>openConcept(c.name)}>{c.name}</button>))}
+          {referenced.filter(r=>!concepts.some(c=>c.name.toLowerCase()===r.toLowerCase())).map(r=>(
+            <button key={r} className="ml-concept-chip unwritten" onClick={()=>openConcept(r)}>{r}</button>))}
+        </div>
+        <div className="ml-side-foot">A confluence of the two seas — where the outer library and the inner one meet.</div>
+      </aside>
+
+      <main className="ml-main">
+        {view!=="reading"&&<header className="ml-top">
+          <div className="ml-search">
+            <IcoSearch/>
+            <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search titles, authors, tags, reflections…"/>
+            {query&&<button className="ml-x" onClick={()=>setQuery("")}><IcoX size={14}/></button>}
+          </div>
+          {view==="shelf"&&<button className="ml-add" onClick={()=>setComposer("source")}><IcoPlus size={15}/> Add source</button>}
+          {view==="notes"&&<button className="ml-add" onClick={()=>setComposer("note")}><IcoPlus size={15}/> New note</button>}
+        </header>}
+
+        {view==="shelf"&&<Shelf sources={fSources} concepts={concepts} onOpenConcept={openConcept}
+          onRead={openReading}
+          onToggleStar={id=>setSources(ss=>ss.map(s=>s.id===id?{...s,starred:!s.starred}:s))}
+          onDelete={id=>setSources(ss=>ss.filter(s=>s.id!==id))}/>}
+        {view==="notes"&&<Notes notes={fNotes} concepts={concepts} onOpenConcept={openConcept}
+          sources={sources} onDelete={id=>setNotes(ns=>ns.filter(n=>n.id!==id))}/>}
+        {view==="reading"&&(()=>{const src=sources.find(s=>s.id===readingId);
+          if(!src)return <Empty msg="That book is no longer on the shelf."/>;
+          return <ReadingRoom source={src} notes={notes.filter(n=>n.sourceId===src.id)}
+            concepts={concepts} onOpenConcept={openConcept} onBack={()=>setView("shelf")}
+            onAdd={(d)=>addAnnotation(src.id,d)}
+            onDelete={id=>setNotes(ns=>ns.filter(n=>n.id!==id))}/>;})()}
+        {view==="concept"&&activeConcept&&<ConceptView name={activeConcept}
+          concept={concepts.find(c=>c.name.toLowerCase()===activeConcept.toLowerCase())}
+          backlinks={backlinksFor(activeConcept)} concepts={concepts} onOpenConcept={openConcept}
+          onBack={()=>setView("shelf")}
+          onSave={body=>setConcepts(cs=>cs.map(c=>c.name.toLowerCase()===activeConcept.toLowerCase()?{...c,body}:c))}/>}
+      </main>
+
+      {composer==="source"&&<SourceComposer onClose={()=>setComposer(null)}
+        onSave={s=>{setSources(ss=>[{...s,id:uid()},...ss]);setComposer(null);}}/>}
+      {composer==="note"&&<NoteComposer onClose={()=>setComposer(null)}
+        onSave={n=>{setNotes(ns=>[{...n,id:uid()},...ns]);setComposer(null);}}/>}
+    </div>
+  );
+}
+
+function Shelf({sources,concepts,onOpenConcept,onToggleStar,onDelete,onRead}){
+  if(!sources.length)return <Empty msg="No sources on the shelf yet. Add the first."/>;
+  const starred=sources.filter(s=>s.starred),rest=sources.filter(s=>!s.starred);
+  return (<div className="ml-scroll">
+    {starred.length>0&&<><Rule label="Kept close"/><div className="ml-cards">
+      {starred.map(s=><SourceCard key={s.id} {...{s,concepts,onOpenConcept,onToggleStar,onDelete,onRead}}/>)}</div></>}
+    {rest.length>0&&<><Rule label="The wider shelf"/><div className="ml-cards">
+      {rest.map(s=><SourceCard key={s.id} {...{s,concepts,onOpenConcept,onToggleStar,onDelete,onRead}}/>)}</div></>}
+  </div>);
+}
+function SourceCard({s,concepts,onOpenConcept,onToggleStar,onDelete,onRead}){
+  const readable=!!archiveId(s.url);
+  return (<article className="ml-card">
+    <div className="ml-card-head"><span className="ml-card-ico"><IcoBook/></span>
+      <button className={"ml-star "+(s.starred?"on":"")} onClick={()=>onToggleStar(s.id)}>
+        <IcoStar fill={s.starred?"currentColor":"none"} size={15}/></button></div>
+    <h3 className="ml-card-title">{s.title}</h3>
+    <div className="ml-card-meta">{s.author}{s.year?" · "+s.year:""}</div>
+    {s.reflection&&<p className="ml-card-refl"><LinkedText text={s.reflection} concepts={concepts} onOpenConcept={onOpenConcept}/></p>}
+    <div className="ml-tags">{s.tags.map(t=><span key={t} className="ml-tag">{t}</span>)}</div>
+    <div className="ml-card-foot">
+      <div className="ml-foot-left">
+        {readable&&<button className="ml-read" onClick={()=>onRead(s)}><IcoBook size={13}/> Read</button>}
+        {s.url?<a className="ml-open" href={s.url} target="_blank" rel="noreferrer"><IcoExt size={13}/> {readable?"Archive":"Open text"}</a>
+          :<span className="ml-open ml-open--none">No link yet</span>}
+      </div>
+      <button className="ml-del" onClick={()=>onDelete(s.id)}><IcoTrash size={13}/></button>
+    </div>
+  </article>);
+}
+
+/* ================= reading room ================= */
+function ReadingRoom({source,notes,concepts,onOpenConcept,onBack,onAdd,onDelete}){
+  const id=archiveId(source.url);
+  const [page,setPage]=useState("");
+  const [body,setBody]=useState("");
+  const [jump,setJump]=useState("");
+  const [iframeKey,setIframeKey]=useState(0);
+  const [src,setSrc]=useState(()=>embedUrl(id));
+  function go(){ if(/^\d+$/.test(jump)){ setSrc(embedUrl(id,jump)); setIframeKey(k=>k+1); } }
+  function save(){ if(!body.trim())return; onAdd({page:page.trim(),body:body.trim()}); setBody(""); }
+  return (
+    <div className="ml-reading">
+      <div className="ml-read-bar">
+        <button className="ml-back" onClick={onBack}><IcoBack size={14}/> Shelf</button>
+        <div className="ml-read-title">{source.title}</div>
+        <div className="ml-read-jump">
+          <input value={jump} onChange={e=>setJump(e.target.value)} placeholder="page #"
+            onKeyDown={e=>{if(e.key==="Enter")go();}}/>
+          <button className="ml-ghost ml-ghost--sm" onClick={go}>Go</button>
+        </div>
+      </div>
+      <div className="ml-read-body">
+        <div className="ml-read-book">
+          <iframe key={iframeKey} title={source.title} src={src}
+            allowFullScreen frameBorder="0"></iframe>
+        </div>
+        <div className="ml-read-notes">
+          <div className="ml-anno-new">
+            <div className="ml-anno-row">
+              <input className="ml-anno-page" value={page} onChange={e=>setPage(e.target.value)} placeholder="p."/>
+              <span className="ml-anno-hint">cite the page you're on</span>
+            </div>
+            <textarea className="ml-anno-text" value={body} onChange={e=>setBody(e.target.value)}
+              placeholder="A passage, a thought… link concepts with [[double brackets]]."
+              onKeyDown={e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter")save();}}/>
+            <div className="ml-anno-actions">
+              <span className="ml-anno-kbd">⌘/Ctrl + ↵</span>
+              <button className="ml-add ml-add--sm" disabled={!body.trim()} onClick={save}><IcoPlus size={13}/> Add margin note</button>
+            </div>
+          </div>
+          <div className="ml-anno-list">
+            {notes.length===0?<div className="ml-anno-empty">No annotations yet for this book. The first passage that stops you — put it here.</div>:
+              notes.slice().sort((a,b)=>b.ts-a.ts).map(n=>(
+              <div key={n.id} className="ml-anno">
+                <div className="ml-anno-meta">
+                  {n.page&&<span className="ml-anno-pg">p. {n.page}</span>}
+                  <span className="ml-anno-time">{stamp(n.ts)}</span>
+                  <button className="ml-del ml-del--sm" onClick={()=>onDelete(n.id)}><IcoTrash size={12}/></button>
+                </div>
+                <div className="ml-anno-body"><LinkedText text={n.body} concepts={concepts} onOpenConcept={onOpenConcept}/></div>
+              </div>))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+function Notes({notes,concepts,onOpenConcept,onDelete,sources}){
+  if(!notes.length)return <Empty msg="No marginalia yet. Open a book and add a margin note, or the passages you collect while reading will gather here."/>;
+  const titleFor=id=>{const s=(sources||[]).find(x=>x.id===id);return s?s.title:null;};
+  return (<div className="ml-scroll"><div className="ml-notes">
+    {notes.slice().sort((a,b)=>(b.ts||0)-(a.ts||0)).map(n=>{
+      const book=titleFor(n.sourceId);
+      return (<article key={n.id} className="ml-note">
+        <div className="ml-note-head">
+          <h3>{n.title|| book || "Untitled"}</h3>
+          <button className="ml-del" onClick={()=>onDelete(n.id)}><IcoTrash size={13}/></button></div>
+        {(book||n.page||n.ts)&&<div className="ml-note-src">
+          {book&&n.title&&<span>{book}</span>}
+          {n.page&&<span className="ml-anno-pg">p. {n.page}</span>}
+          {n.ts&&<span className="ml-anno-time">{stamp(n.ts)}</span>}
+        </div>}
+        <p className="ml-card-refl"><LinkedText text={n.body} concepts={concepts} onOpenConcept={onOpenConcept}/></p>
+      </article>);})}
+  </div></div>);
+}
+function ConceptView({name,concept,backlinks,concepts,onOpenConcept,onBack,onSave}){
+  const [editing,setEditing]=useState(false);
+  const [draft,setDraft]=useState(concept?.body||"");
+  useEffect(()=>setDraft(concept?.body||""),[concept,name]);
+  return (<div className="ml-scroll">
+    <button className="ml-back" onClick={onBack}><IcoBack size={14}/> Back to the shelf</button>
+    <div className="ml-concept-head"><IcoHash size={22}/><h1>{name}</h1></div>
+    <div className="ml-concept-body">
+      {editing?(<div className="ml-editwrap">
+        <textarea className="ml-textarea" value={draft} onChange={e=>setDraft(e.target.value)}
+          placeholder="What does this concept mean in your web? Link others with [[double brackets]]." autoFocus/>
+        <div className="ml-editbtns">
+          <button className="ml-add" onClick={()=>{onSave(draft);setEditing(false);}}>Save</button>
+          <button className="ml-ghost" onClick={()=>setEditing(false)}>Cancel</button></div>
+      </div>):concept?.body?(<p className="ml-concept-prose">
+        <LinkedText text={concept.body} concepts={concepts} onOpenConcept={onOpenConcept}/>
+        <button className="ml-inline-edit" onClick={()=>setEditing(true)}>edit</button></p>
+      ):(<div className="ml-unwritten-block"><p>This concept is referenced but unwritten.</p>
+        <button className="ml-add" onClick={()=>setEditing(true)}><IcoFeather size={14}/> Write it into being</button></div>)}
+    </div>
+    <Rule label={"Backlinks · "+backlinks.length}/>
+    {backlinks.length===0?<p className="ml-muted">Nothing links here yet.</p>:(
+      <div className="ml-backlinks">{backlinks.map(b=>(
+        <div key={b.kind+b.id} className="ml-backlink">
+          <span className={"ml-kind ml-kind--"+b.kind}>{b.kind}</span>
+          <div><div className="ml-backlink-title">{b.title}</div>
+            <p className="ml-backlink-text"><LinkedText text={b.text} concepts={concepts} onOpenConcept={onOpenConcept}/></p></div>
+        </div>))}
+      </div>)}
+  </div>);
+}
+function SourceComposer({onClose,onSave}){
+  const [f,setF]=useState({title:"",author:"",year:"",url:"",tags:"",reflection:"",starred:false});
+  const ref=useRef();useEffect(()=>ref.current?.focus(),[]);
+  const set=k=>e=>setF({...f,[k]:e.target.value});
+  return (<Modal onClose={onClose} title="Add a source">
+    <input ref={ref} className="ml-field" placeholder="Title" value={f.title} onChange={set("title")}/>
+    <input className="ml-field" placeholder="Author / translator" value={f.author} onChange={set("author")}/>
+    <div className="ml-row"><input className="ml-field" placeholder="Year" value={f.year} onChange={set("year")}/>
+      <input className="ml-field" placeholder="URL (optional)" value={f.url} onChange={set("url")}/></div>
+    <input className="ml-field" placeholder="Tags, comma separated" value={f.tags} onChange={set("tags")}/>
+    <textarea className="ml-textarea" placeholder="Reflection — why this matters. Link concepts with [[double brackets]]."
+      value={f.reflection} onChange={set("reflection")}/>
+    <div className="ml-editbtns">
+      <button className="ml-add" disabled={!f.title.trim()}
+        onClick={()=>onSave({...f,tags:f.tags.split(",").map(t=>t.trim()).filter(Boolean)})}>Place on shelf</button>
+      <button className="ml-ghost" onClick={onClose}>Cancel</button></div>
+  </Modal>);
+}
+function NoteComposer({onClose,onSave}){
+  const [title,setTitle]=useState("");const [body,setBody]=useState("");
+  const ref=useRef();useEffect(()=>ref.current?.focus(),[]);
+  return (<Modal onClose={onClose} title="New note">
+    <input ref={ref} className="ml-field" placeholder="Title (optional)" value={title} onChange={e=>setTitle(e.target.value)}/>
+    <textarea className="ml-textarea ml-textarea--tall"
+      placeholder="The note itself. Link concepts with [[double brackets]] — unwritten ones glow faintly until you write them."
+      value={body} onChange={e=>setBody(e.target.value)}/>
+    <div className="ml-editbtns">
+      <button className="ml-add" disabled={!body.trim()} onClick={()=>onSave({title,body})}>Keep note</button>
+      <button className="ml-ghost" onClick={onClose}>Cancel</button></div>
+  </Modal>);
+}
+function Modal({title,children,onClose}){
+  return (<div className="ml-modal-bg" onClick={onClose}>
+    <div className="ml-modal" onClick={e=>e.stopPropagation()}>
+      <div className="ml-modal-head"><h2>{title}</h2><button className="ml-x" onClick={onClose}><IcoX size={16}/></button></div>
+      {children}</div></div>);
+}
+function Rule({label}){return <div className="ml-rule"><span>{label}</span><i/></div>;}
+function Empty({msg}){return <div className="ml-scroll"><div className="ml-empty"><IcoFeather size={26}/><p>{msg}</p></div></div>;}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<MysticalLibrary/>);
 </script>
 </body>
 </html>
